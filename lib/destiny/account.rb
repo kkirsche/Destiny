@@ -4,6 +4,10 @@ module Destiny
   # The Destiny::Account class is for acceessing information about a user's
   # account via the Destiny API
   class Account
+    def initialize(client)
+      @client = client
+    end
+
     # Returns Destiny account information for the supplied membership in a
     # compact summary form. Will return vault information even if you're not
     # that account. Don't you want to be a cool kid and use this service
