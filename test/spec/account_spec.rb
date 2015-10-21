@@ -54,9 +54,9 @@ module DestinyTest
     it 'should retrieve a user account statistics' do
       response = @client.account.stats ENV['Membership_Type'],
                                         ENV['Display_Name']
-      expect(response.keys).must_equal ['Response', 'ErrorCode',
-                                        'ThrottleSeconds', 'ErrorStatus',
-                                        'Message', 'MessageData']
+      puts response
+      expect(response.keys).must_equal ['ErrorCode', 'ThrottleSeconds',
+                                        'ErrorStatus', 'Message', 'MessageData']
     end
   end
 end
