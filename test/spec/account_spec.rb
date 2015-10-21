@@ -6,7 +6,7 @@ module DestinyTest
       client = Destiny::Client.new ENV['X_API_Key']
       response = client.account.summary ENV['Membership_Type'],
                                         ENV['Membership_ID']
-      expect(response.body).must_equal nil
+      expect(response).must_equal nil
     end
   end
 end
