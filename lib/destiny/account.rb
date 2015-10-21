@@ -41,9 +41,12 @@ module Destiny
     end
 
     def membership_id_from_display_name(membership_type, display_name)
-      response = @client.get "Destiny/#{membership_type}/Stats/GetMembershipIdByDisplayName/#{display_name}"
+      response = @client.get "Destiny/#{membership_type}/Stats/"\
+                             "GetMembershipIdByDisplayName/#{display_name}"
       response = Destiny::Client.validate response
       @membership_id ||= response['Response']
+
+      response
     end
 
     # Returns a list of Destiny memberships given a full Gamertag or PSN ID

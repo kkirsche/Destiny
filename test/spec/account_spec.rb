@@ -32,7 +32,7 @@ module DestinyTest
         'MessageData'=>{}
       }
       response = @client.account.membership_id_from_display_name ENV['Membership_Type'], ENV['Display_Name']
-      expect(response).must_equal nil
+      expect(response).must_equal valid_response
     end
 
     it 'should search for a destiny player based on platform and username' do
