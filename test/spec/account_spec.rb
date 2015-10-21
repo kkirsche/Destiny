@@ -2,6 +2,10 @@ require 'test_helper'
 
 module DestinyTest
   describe 'Destiny Gem', 'The Destiny API Gem' do
+    before do
+      @client = Destiny::Client.new ENV['X_API_Key']
+    end
+
     it 'should search for a destiny player based on platform and username' do
       valid_response = {
         'Response' => [
@@ -18,15 +22,13 @@ module DestinyTest
         'Message' => 'Ok',
         'MessageData' => {}
       }
-      client = Destiny::Client.new ENV['X_API_Key']
-      response = client.account.search_destiny_player ENV['Membership_Type'],
+      response = @client.account.search_destiny_player ENV['Membership_Type'],
                                                       ENV['Display_Name']
       expect(response).must_equal valid_response
     end
 
     it 'should retrieve a user account summary' do
-      client = Destiny::Client.new ENV['X_API_Key']
-      response = client.account.summary ENV['Membership_Type'],
+      response = @client.account.summary ENV['Membership_Type'],
                                         ENV['Display_Name']
       expect(response.keys).must_equal ['Response', 'ErrorCode',
                                         'ThrottleSeconds', 'ErrorStatus',
@@ -34,8 +36,7 @@ module DestinyTest
     end
 
     it 'should retrieve a user account' do
-      client = Destiny::Client.new ENV['X_API_Key']
-      response = client.account.details ENV['Membership_Type'],
+      response = @client.account.details ENV['Membership_Type'],
                                         ENV['Display_Name']
       expect(response.keys).must_equal ['Response', 'ErrorCode',
                                         'ThrottleSeconds', 'ErrorStatus',
@@ -43,8 +44,7 @@ module DestinyTest
     end
 
     it 'should retrieve a user item list' do
-      client = Destiny::Client.new ENV['X_API_Key']
-      response = client.account.items ENV['Membership_Type'],
+      response = @client.account.items ENV['Membership_Type'],
                                         ENV['Display_Name']
       expect(response.keys).must_equal ['Response', 'ErrorCode',
                                         'ThrottleSeconds', 'ErrorStatus',
@@ -52,8 +52,7 @@ module DestinyTest
     end
 
     it 'should retrieve a user account statistics' do
-      client = Destiny::Client.new ENV['X_API_Key']
-      response = client.account.stats ENV['Membership_Type'],
+      response = @client.account.stats ENV['Membership_Type'],
                                         ENV['Display_Name']
       expect(response.keys).must_equal ['Response', 'ErrorCode',
                                         'ThrottleSeconds', 'ErrorStatus',
