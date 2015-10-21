@@ -19,7 +19,7 @@ module Destiny
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's account.
     def details(sym_membership_type, username)
-      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      num_membership_type = Destiny::MEMBERSHIP_TYPES[sym_membership_type]
       membership_id_from_display_name num_membership_type, username if @membership_id.nil?
       response = @client.get "Destiny/#{num_membership_type}/Account/"\
                              "#{@membership_id}"
@@ -33,7 +33,7 @@ module Destiny
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's items.
     def items(sym_membership_type, username)
-      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      num_membership_type = Destiny::MEMBERSHIP_TYPES[sym_membership_type]
       membership_id_from_display_name num_membership_type, username if @membership_id.nil?
       response = @client.get "Destiny/#{num_membership_type}/Account/"\
                              "#{@membership_id}/Items" do |req|
@@ -49,7 +49,7 @@ module Destiny
     # @param display_name [String] The user's Gamertag or PSN username.
     # @return [Hash] A hash containing the membership ID
     def membership_id_from_display_name(sym_membership_type, display_name)
-      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      num_membership_type = Destiny::MEMBERSHIP_TYPES[sym_membership_type]
       response = @client.get "Destiny/#{num_membership_type}/Stats/"\
                              "GetMembershipIdByDisplayName/#{display_name}"
       response = Destiny::Client.validate response
@@ -64,7 +64,7 @@ module Destiny
     # @param display_name [String] The user's Gamertag or PSN username.
     # @return [Hash] A hash representation of the destiny player(s) found.
     def search_destiny_player(sym_membership_type, display_name)
-      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      num_membership_type = Destiny::MEMBERSHIP_TYPES[sym_membership_type]
       response = @client.get "Destiny/SearchDestinyPlayer/#{num_membership_type}"\
                              "/#{display_name}"
       response = Destiny::Client.validate response
@@ -82,7 +82,7 @@ module Destiny
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's account.
     def summary(sym_membership_type, username)
-      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      num_membership_type = Destiny::MEMBERSHIP_TYPES[sym_membership_type]
       membership_id_from_display_name num_membership_type, username if @membership_id.nil?
       response = @client.get "Destiny/#{num_membership_type}/Account/"\
                              "#{@membership_id}/Summary"
@@ -96,7 +96,7 @@ module Destiny
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's aggregate statistics.
     def stats(sym_membership_type, username)
-      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      num_membership_type = Destiny::MEMBERSHIP_TYPES[sym_membership_type]
       membership_id_from_display_name num_membership_type, username if @membership_id.nil?
       response = @client.get "Destiny/Stats/Account/#{num_membership_type}/"\
                              "#{@membership_id}"
