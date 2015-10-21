@@ -103,12 +103,18 @@ module Destiny
 
     private
 
-    def find_membership_type_from(symbol_membership_type)
-      if symbol_membership_type.respond_to? :to_sym
-        key = symbol_membership_type.to_sym
+    # This method is used to convert an unknown type (string, symbol, fixnum) of
+    # membership into the numeric value needed to interact with the Destiny API.
+    #
+    # @param membership_type [#to_sym, Fixnum] The membership type (either PSN
+    #   or Xbox Live)
+    # @return [Fixnum] The numeric representation of the player's member network
+    def find_membership_type_from(membership_type)
+      if membership_type.respond_to? :to_sym
+        key = membership_type.to_sym
         num_membership_type = Destiny::MEMBERSHIP_TYPES[key]
-      elsif symbol_membership_type.class == Fixnum
-        num_membership_type = symbol_membership_type
+      elsif membership_type.class == Fixnum
+        num_membership_type = membership_type
       else
         raise 'Unknown membership type found. Please use :psn or :xbox_live'
       end
