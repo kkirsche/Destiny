@@ -25,7 +25,12 @@ module Destiny
     private
 
     def validate(response)
-      JSON.parse(response.body) if response.success?
+      puts response.body
+      if response.success?
+        JSON.parse response.body
+      else
+        raise 'There was a problem with the request'
+      end
     end
   end
 end
