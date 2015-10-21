@@ -12,5 +12,18 @@ module Destiny
     def account
       @account ||= Destiny::Account.new @client
     end
+
+    def user
+      @user ||= Destiny::User.new @client
+    end
+
+    def self.validate(response)
+      puts response.body
+      if response.success?
+        JSON.parse response.body
+      else
+        raise 'There was a problem with the request'
+      end
+    end
   end
 end

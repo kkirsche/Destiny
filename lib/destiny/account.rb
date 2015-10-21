@@ -19,18 +19,7 @@ module Destiny
     # @return [Hash] A hash representation of the user's account.
     def summary(membership_type, member_id)
       response = @client.get "Destiny/#{membership_type}/Account/#{member_id}/Summary"
-      validate response
-    end
-
-    private
-
-    def validate(response)
-      puts response.body
-      if response.success?
-        JSON.parse response.body
-      else
-        raise 'There was a problem with the request'
-      end
+      Destiny::Client.validate response
     end
   end
 end
