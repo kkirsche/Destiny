@@ -16,7 +16,10 @@ module Destiny
     # @return [Hash] A hash representation of the destiny player(s) found.
     def search_destiny_player(membership_type, display_name)
       response = @client.get "Destiny/SearchDestinyPlayer/#{membership_type}/#{display_name}"
-      Destiny::Client.validate response
+      response = Destiny::Client.validate response
+      @membership_id ||= response['Response'][0]['membershipId']
+
+      response
     end
 
     # Returns Destiny account information for the supplied membership in a
@@ -28,8 +31,9 @@ module Destiny
     #   used by the member to play Destiny.
     # @param member_id [Fixnum, String] The UUID of the member
     # @return [Hash] A hash representation of the user's account.
-    def summary(membership_type, member_id)
-      response = @client.get "Destiny/#{membership_type}/Account/#{member_id}/Summary"
+    def summary(membership_type, username)
+      search_destiny_player membership_type, username
+      response = @client.get "Destiny/#{membership_type}/Account/#{@membership_id}/Summary"
       Destiny::Client.validate response
     end
   end

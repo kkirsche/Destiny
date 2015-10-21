@@ -27,7 +27,7 @@ module DestinyTest
     it 'should retrieve a user account summary' do
       client = Destiny::Client.new ENV['X_API_Key']
       response = client.account.summary ENV['Membership_Type'],
-                                        ENV['Membership_ID']
+                                        ENV['Display_Name']
       expect(response.keys).must_equal ['Response', 'ErrorCode',
                                         'ThrottleSeconds', 'ErrorStatus',
                                         'Message', 'MessageData']
