@@ -9,12 +9,13 @@ module Destiny
     end
 
     # Returns a list of Destiny memberships given a full Gamertag or PSN ID
+    #
+    # @param membership_type [Fixnum, String] A numeric representation of the
+    #   platform used by the member to play Destiny
+    # @param display_name [String] The user's Gamertag or PSN username.
+    # @return [Hash] A hash representation of the destiny player(s) found.
     def search_destiny_player(membership_type, display_name)
-      response = @client.get "Destiny/SearchDestinyPlayer/#{membership_type}/#{display_name}" do |req|
-        puts req.url
-      end
-      puts response.status_code
-      puts response.body
+      response = @client.get "Destiny/SearchDestinyPlayer/#{membership_type}/#{display_name}"
       Destiny::Client.validate response
     end
 
