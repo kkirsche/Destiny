@@ -9,6 +9,43 @@ module Destiny
       @membership_id = nil
     end
 
+    # [Deprecated] Returns Destiny account information for the supplied
+    # membership. This endpoint has been deprecated. Please use `summary`
+    # instead, pretty please with sugar on top. Seriously, we'll be BFFs 4 evah.
+    # Plus you can get at vault info without being logged in as that person, how
+    # cool is that?
+    #
+    # @param membership_type [Fixnum, String] A number representing the platform
+    #   used by the member to play Destiny.
+    # @param username [Fixnum, String] The members username / display name
+    # @return [Hash] A hash representation of the user's account.
+    def details(membership_type, username)
+      membership_id_from_display_name membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/#{membership_type}/Account/"\
+                             "#{@membership_id}"
+      Destiny::Client.validate response
+    end
+
+    # Returns information about all items for the supplied Destiny Membership ID
+    # and a minimal set of character information so that it can be used.
+    #
+    # @param membership_type [Fixnum, String] A number representing the platform
+    #   used by the member to play Destiny.
+    # @param username [Fixnum, String] The members username / display name
+    # @return [Hash] A hash representation of the user's items.
+    def items(membership_type, username)
+      membership_id_from_display_name membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/#{membership_type}/Account/"\
+                             "#{@membership_id}/Items"
+      Destiny::Client.validate response
+    end
+
+    def membership_id_from_display_name(membership_type, display_name)
+      response = @client.get "Destiny/#{membership_type}/Stats/GetMembershipIdByDisplayName/#{display_name}"
+      response = Destiny::Client.validate response
+      @membership_id ||= response['Response']
+    end
+
     # Returns a list of Destiny memberships given a full Gamertag or PSN ID
     #
     # @param membership_type [Fixnum, String] A numeric representation of the
@@ -24,23 +61,6 @@ module Destiny
       response
     end
 
-    # [Deprecated] Returns Destiny account information for the supplied
-    # membership. This endpoint has been deprecated. Please use `summary`
-    # instead, pretty please with sugar on top. Seriously, we'll be BFFs 4 evah.
-    # Plus you can get at vault info without being logged in as that person, how
-    # cool is that?
-    #
-    # @param membership_type [Fixnum, String] A number representing the platform
-    #   used by the member to play Destiny.
-    # @param username [Fixnum, String] The members username / display name
-    # @return [Hash] A hash representation of the user's account.
-    def details(membership_type, username)
-      search_destiny_player membership_type, username if @membership_id.nil?
-      response = @client.get "Destiny/#{membership_type}/Account/"\
-                             "#{@membership_id}"
-      Destiny::Client.validate response
-    end
-
     # Returns Destiny account information for the supplied membership in a
     # compact summary form. Will return vault information even if you're not
     # that account. Don't you want to be a cool kid and use this service
@@ -51,28 +71,21 @@ module Destiny
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's account.
     def summary(membership_type, username)
-      search_destiny_player membership_type, username if @membership_id.nil?
+      membership_id_from_display_name membership_type, username if @membership_id.nil?
       response = @client.get "Destiny/#{membership_type}/Account/"\
                              "#{@membership_id}/Summary"
       Destiny::Client.validate response
     end
 
-    # Returns information about all items for the supplied Destiny Membership ID
-    # and a minimal set of character information so that it can be used.
+    # Gets aggregate historical stats organized around each character for a
+    # given account.
     #
     # @param membership_type [Fixnum, String] A number representing the platform
     #   used by the member to play Destiny.
     # @param username [Fixnum, String] The members username / display name
-    # @return [Hash] A hash representation of the user's itmes.
-    def items(membership_type, username)
-      search_destiny_player membership_type, username if @membership_id.nil?
-      response = @client.get "Destiny/#{membership_type}/Account/"\
-                             "#{@membership_id}/Items"
-      Destiny::Client.validate response
-    end
-
+    # @return [Hash] A hash representation of the user's aggregate statistics.
     def stats(membership_type, username)
-      search_destiny_player membership_type, username if @membership_id.nil?
+      membership_id_from_display_name membership_type, username if @membership_id.nil?
       response = @client.get "Destiny/Stats/Account/#{membership_type}/"\
                              "#{@membership_id}"
       Destiny::Client.validate response
