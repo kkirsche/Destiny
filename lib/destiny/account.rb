@@ -8,6 +8,16 @@ module Destiny
       @client = client
     end
 
+    # Returns a list of Destiny memberships given a full Gamertag or PSN ID
+    def search_destiny_player(membership_type, display_name)
+      response = @client.get "Destiny/SearchDestinyPlayer/#{membership_type}/#{display_name}" do |req|
+        puts req.url
+      end
+      puts response.status_code
+      puts response.body
+      Destiny::Client.validate response
+    end
+
     # Returns Destiny account information for the supplied membership in a
     # compact summary form. Will return vault information even if you're not
     # that account. Don't you want to be a cool kid and use this service

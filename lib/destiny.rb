@@ -3,5 +3,4 @@ require 'json'
 
 require 'destiny/account'
 require 'destiny/client'
-require 'destiny/user'
 require 'destiny/version'

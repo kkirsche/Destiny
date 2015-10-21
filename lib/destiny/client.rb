@@ -4,6 +4,8 @@ module Destiny
   # The Destiny::Client class is the primary class used to interact
   # with the Destiny API
   class Client
+    attr_accessor :account
+
     def initialize(api_key)
       @client = Hurley::Client.new 'http://www.bungie.net/Platform/'
       @client.header['X-API-Key'] = api_key
@@ -11,10 +13,6 @@ module Destiny
 
     def account
       @account ||= Destiny::Account.new @client
-    end
-
-    def user
-      @user ||= Destiny::User.new @client
     end
 
     def self.validate(response)
