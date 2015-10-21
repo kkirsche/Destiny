@@ -18,7 +18,6 @@ module Destiny
     end
 
     def self.validate(response)
-      puts response.body
       if response.success?
         JSON.parse response.body
       else
