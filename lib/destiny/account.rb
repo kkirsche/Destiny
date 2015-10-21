@@ -15,13 +15,13 @@ module Destiny
     # Plus you can get at vault info without being logged in as that person, how
     # cool is that?
     #
-    # @param membership_type [Fixnum, String] A number representing the platform
-    #   used by the member to play Destiny.
+    # @param membership_type [Symbol] :psn or :xbox_live
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's account.
-    def details(membership_type, username)
-      membership_id_from_display_name membership_type, username if @membership_id.nil?
-      response = @client.get "Destiny/#{membership_type}/Account/"\
+    def details(sym_membership_type, username)
+      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      membership_id_from_display_name num_membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/#{num_membership_type}/Account/"\
                              "#{@membership_id}"
       Destiny::Client.validate response
     end
@@ -29,26 +29,28 @@ module Destiny
     # Returns information about all items for the supplied Destiny Membership ID
     # and a minimal set of character information so that it can be used.
     #
-    # @param membership_type [Fixnum, String] A number representing the platform
-    #   used by the member to play Destiny.
+    # @param membership_type [Symbol] :psn or :xbox_live
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's items.
-    def items(membership_type, username)
-      membership_id_from_display_name membership_type, username if @membership_id.nil?
-      response = @client.get "Destiny/#{membership_type}/Account/"\
-                             "#{@membership_id}/Items"
+    def items(sym_membership_type, username)
+      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      membership_id_from_display_name num_membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/#{num_membership_type}/Account/"\
+                             "#{@membership_id}/Items" do |req|
+                              puts req.url
+                             end
       Destiny::Client.validate response
     end
 
     # Returns the numerical id of a player based on their display name, zero if
     # not found.
     #
-    # @param membership_type [Fixnum, String] A numeric representation of the
-    #   platform used by the member to play Destiny
+    # @param membership_type [Symbol] :psn or :xbox_live
     # @param display_name [String] The user's Gamertag or PSN username.
     # @return [Hash] A hash containing the membership ID
-    def membership_id_from_display_name(membership_type, display_name)
-      response = @client.get "Destiny/#{membership_type}/Stats/"\
+    def membership_id_from_display_name(sym_membership_type, display_name)
+      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      response = @client.get "Destiny/#{num_membership_type}/Stats/"\
                              "GetMembershipIdByDisplayName/#{display_name}"
       response = Destiny::Client.validate response
       @membership_id ||= response['Response']
@@ -58,12 +60,12 @@ module Destiny
 
     # Returns a list of Destiny memberships given a full Gamertag or PSN ID
     #
-    # @param membership_type [Fixnum, String] A numeric representation of the
-    #   platform used by the member to play Destiny
+    # @param membership_type [Symbol] :psn or :xbox_live
     # @param display_name [String] The user's Gamertag or PSN username.
     # @return [Hash] A hash representation of the destiny player(s) found.
-    def search_destiny_player(membership_type, display_name)
-      response = @client.get "Destiny/SearchDestinyPlayer/#{membership_type}"\
+    def search_destiny_player(sym_membership_type, display_name)
+      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      response = @client.get "Destiny/SearchDestinyPlayer/#{num_membership_type}"\
                              "/#{display_name}"
       response = Destiny::Client.validate response
       @membership_id ||= response['Response'][0]['membershipId']
@@ -76,13 +78,13 @@ module Destiny
     # that account. Don't you want to be a cool kid and use this service
     # instead of GetAccount?
     #
-    # @param membership_type [Fixnum, String] A number representing the platform
-    #   used by the member to play Destiny.
+    # @param membership_type [Symbol] :psn or :xbox_live
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's account.
-    def summary(membership_type, username)
-      membership_id_from_display_name membership_type, username if @membership_id.nil?
-      response = @client.get "Destiny/#{membership_type}/Account/"\
+    def summary(sym_membership_type, username)
+      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      membership_id_from_display_name num_membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/#{num_membership_type}/Account/"\
                              "#{@membership_id}/Summary"
       Destiny::Client.validate response
     end
@@ -90,13 +92,13 @@ module Destiny
     # Gets aggregate historical stats organized around each character for a
     # given account.
     #
-    # @param membership_type [Fixnum, String] A number representing the platform
-    #   used by the member to play Destiny.
+    # @param membership_type [Symbol] :psn or :xbox_live
     # @param username [Fixnum, String] The members username / display name
     # @return [Hash] A hash representation of the user's aggregate statistics.
-    def stats(membership_type, username)
-      membership_id_from_display_name membership_type, username if @membership_id.nil?
-      response = @client.get "Destiny/Stats/Account/#{membership_type}/"\
+    def stats(sym_membership_type, username)
+      num_membership_type = Destiny::Client.sym_to_num_membership_type sym_membership_type
+      membership_id_from_display_name num_membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/Stats/Account/#{num_membership_type}/"\
                              "#{@membership_id}"
       Destiny::Client.validate response
     end

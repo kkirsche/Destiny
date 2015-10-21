@@ -22,5 +22,13 @@ module Destiny
         raise 'There was a problem with the request'
       end
     end
+
+    def self.sym_to_num_membership_type(type_id)
+      @membership_types ||= {
+        xbox_live: 1,
+        psn: 2
+      }
+      @membership_types.key(type_id)
+    end
   end
 end
