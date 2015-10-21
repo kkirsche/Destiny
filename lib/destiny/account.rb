@@ -18,7 +18,7 @@ module Destiny
     # @param member_id [Fixnum, String] The UUID of the member
     # @return [Hash] A hash representation of the user's account.
     def summary(membership_type, member_id)
-      response = @client.get "#{membership_type}/Account/#{member_id}/Summary"
+      response = @client.get "Destiny/#{membership_type}/Account/#{member_id}/Summary"
       validate response
     end
 
