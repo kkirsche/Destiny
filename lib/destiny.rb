@@ -1,5 +1,6 @@
-require "destiny/version"
+require 'hurley'
+require 'json'
 
-module Destiny
-  # Your code goes here...
-end
+require 'destiny/account'
+require 'destiny/client'
+require 'destiny/version'
