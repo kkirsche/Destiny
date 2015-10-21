@@ -70,5 +70,12 @@ module Destiny
                              "#{@membership_id}/Items"
       Destiny::Client.validate response
     end
+
+    def stats(membership_type, username)
+      search_destiny_player membership_type, username if @membership_id.nil?
+      response = @client.get "Destiny/Stats/Account/#{@membership_id}/"\
+                             "#{membership_type}"
+      Destiny::Client.validate response
+    end
   end
 end

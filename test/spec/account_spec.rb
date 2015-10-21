@@ -50,5 +50,14 @@ module DestinyTest
                                         'ThrottleSeconds', 'ErrorStatus',
                                         'Message', 'MessageData']
     end
+
+    it 'should retrieve a user account statistics' do
+      client = Destiny::Client.new ENV['X_API_Key']
+      response = client.account.stats ENV['Membership_Type'],
+                                        ENV['Display_Name']
+      expect(response.keys).must_equal ['Response', 'ErrorCode',
+                                        'ThrottleSeconds', 'ErrorStatus',
+                                        'Message', 'MessageData']
+    end
   end
 end
