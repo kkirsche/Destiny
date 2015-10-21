@@ -30,33 +30,34 @@ module DestinyTest
     it 'should retrieve a user account summary' do
       response = @client.account.summary ENV['Membership_Type'],
                                         ENV['Display_Name']
-      expect(response.keys).must_equal ['Response', 'ErrorCode',
-                                        'ThrottleSeconds', 'ErrorStatus',
-                                        'Message', 'MessageData']
+      expect(response.keys).must_equal %w(Response ErrorCode
+                                          ThrottleSeconds ErrorStatus
+                                          Message MessageData)
     end
 
     it 'should retrieve a user account' do
       response = @client.account.details ENV['Membership_Type'],
                                         ENV['Display_Name']
-      expect(response.keys).must_equal ['Response', 'ErrorCode',
-                                        'ThrottleSeconds', 'ErrorStatus',
-                                        'Message', 'MessageData']
+      expect(response.keys).must_equal %w(Response ErrorCode
+                                          ThrottleSeconds ErrorStatus
+                                          Message MessageData)
     end
 
     it 'should retrieve a user item list' do
       response = @client.account.items ENV['Membership_Type'],
                                         ENV['Display_Name']
-      expect(response.keys).must_equal ['Response', 'ErrorCode',
-                                        'ThrottleSeconds', 'ErrorStatus',
-                                        'Message', 'MessageData']
+      expect(response.keys).must_equal %w(Response ErrorCode
+                                          ThrottleSeconds ErrorStatus
+                                          Message MessageData)
     end
 
     it 'should retrieve a user account statistics' do
       response = @client.account.stats ENV['Membership_Type'],
                                         ENV['Display_Name']
       puts response
-      expect(response.keys).must_equal ['ErrorCode', 'ThrottleSeconds',
-                                        'ErrorStatus', 'Message', 'MessageData']
+      expect(response.keys).must_equal %w(Response ErrorCode
+                                          ThrottleSeconds ErrorStatus
+                                          Message MessageData)
     end
   end
 end
