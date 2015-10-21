@@ -15,6 +15,10 @@ module Destiny
       @account ||= Destiny::Account.new @client
     end
 
+    def manifest
+      @manifest ||= Destiny::Manifest.new @client
+    end
+
     def self.validate(response)
       if response.success?
         JSON.parse response.body
