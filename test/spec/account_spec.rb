@@ -32,5 +32,23 @@ module DestinyTest
                                         'ThrottleSeconds', 'ErrorStatus',
                                         'Message', 'MessageData']
     end
+
+    it 'should retrieve a user account' do
+      client = Destiny::Client.new ENV['X_API_Key']
+      response = client.account.details ENV['Membership_Type'],
+                                        ENV['Display_Name']
+      expect(response.keys).must_equal ['Response', 'ErrorCode',
+                                        'ThrottleSeconds', 'ErrorStatus',
+                                        'Message', 'MessageData']
+    end
+
+    it 'should retrieve a user item list' do
+      client = Destiny::Client.new ENV['X_API_Key']
+      response = client.account.items ENV['Membership_Type'],
+                                        ENV['Display_Name']
+      expect(response.keys).must_equal ['Response', 'ErrorCode',
+                                        'ThrottleSeconds', 'ErrorStatus',
+                                        'Message', 'MessageData']
+    end
   end
 end
