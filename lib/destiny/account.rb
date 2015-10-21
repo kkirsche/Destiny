@@ -40,6 +40,13 @@ module Destiny
       Destiny::Client.validate response
     end
 
+    # Returns the numerical id of a player based on their display name, zero if
+    # not found.
+    #
+    # @param membership_type [Fixnum, String] A numeric representation of the
+    #   platform used by the member to play Destiny
+    # @param display_name [String] The user's Gamertag or PSN username.
+    # @return [Hash] A hash containing the membership ID
     def membership_id_from_display_name(membership_type, display_name)
       response = @client.get "Destiny/#{membership_type}/Stats/"\
                              "GetMembershipIdByDisplayName/#{display_name}"
